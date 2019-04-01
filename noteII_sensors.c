@@ -143,7 +143,6 @@ int smdk4x12_sensors_set_delay(struct sensors_poll_device_t *dev, int handle,
 static int smdk4x12_sensors_batch(struct sensors_poll_device_1 *dev, int handle, int flags, int64_t period_ns, int64_t timeout) 
 {
 	ALOGD("batch");
-    int flags, int64_t period_ns, int64_t timeout) {
 	(void)flags;
 	(void)timeout;
 	smdk4x12_sensors_set_delay((struct sensors_poll_device_t *)dev, handle, period_ns);
