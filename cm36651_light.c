@@ -58,24 +58,24 @@ int cm36651_light_init(struct noteII_sensors_handlers *handlers,
 
 	input_fd = input_open("light_sensor");
 	if (input_fd < 0) {
-		ALOGE("%s: Unable to open input", __func__);
+		ALOGD("%s: Unable to open input", __func__);
 		goto error;
 	}
 
 	rc = sysfs_path_prefix("light_sensor", (char *) &path);
 	if (rc < 0 || path[0] == '\0') {
-		ALOGE("%s: Unable to open sysfs", __func__);
+		ALOGD("%s: Unable to open sysfs", __func__);
 		goto error;
 	}
 
 	int sf = snprintf(data->path_delay, PATH_MAX, "%s/poll_delay", path);
 	if(sf <= 0)
 	{
-		ALOGV("Light init with light_poll_delay");
+		ALOGD("Light init with light_poll_delay");
 		sf = snprintf(data->path_delay, PATH_MAX, "%s/light_poll_delay", path);
 		if(sf <= 0)
 		{
-			ALOGV("Light HAS FAILED !POLL_DELAY!");
+			ALOGD("Light HAS FAILED !POLL_DELAY!");
 			goto error;
 		}
 	}
@@ -130,7 +130,7 @@ int cm36651_light_activate(struct noteII_sensors_handlers *handlers)
 
 	rc = ssp_sensor_enable(LIGHT_SENSOR);
 	if (rc < 0) {
-		ALOGE("%s: Unable to enable ssp sensor", __func__);
+		ALOGD("%s: Unable to enable ssp sensor", __func__);
 		return -1;
 	}
 
@@ -140,7 +140,7 @@ int cm36651_light_activate(struct noteII_sensors_handlers *handlers)
 }
 
 int cm36651_light_deactivate(struct noteII_sensors_handlers *handlers)
-{
+{/*
 	struct cm36651_light_data *data;
 	int rc;
 
@@ -153,12 +153,13 @@ int cm36651_light_deactivate(struct noteII_sensors_handlers *handlers)
 
 	rc = ssp_sensor_disable(LIGHT_SENSOR);
 	if (rc < 0) {
-		ALOGE("%s: Unable to disable ssp sensor", __func__);
+		ALOGD("%s: Unable to disable ssp sensor", __func__);
 		return -1;
 	}
 
 	handlers->activated = 1;
 
+	return 0;*/
 	return 0;
 }
 
@@ -176,7 +177,7 @@ int cm36651_light_set_delay(struct noteII_sensors_handlers *handlers, int64_t de
 
 	rc = sysfs_value_write(data->path_delay, delay);
 	if (rc < 0) {
-		ALOGE("%s: Unable to write sysfs value", __func__);
+		ALOGD("%s: Unable to write sysfs value", __func__);
 		return -1;
 	}
 

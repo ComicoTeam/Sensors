@@ -87,7 +87,7 @@ int akm8963_config_read(struct akm8963_data *data)
 
 	config_fd = open(AKM8963_CONFIG_PATH, O_RDONLY);
 	if (config_fd < 0) {
-		ALOGE("%s: Unable to open akm8963 config %d %s", __func__, errno, strerror(errno));
+		ALOGD("%s: Unable to open akm8963 config %d %s", __func__, errno, strerror(errno));
 		goto error;
 	}
 
@@ -152,7 +152,7 @@ int akm8963_config_write(struct akm8963_data *data)
 
 	config_fd = open(AKM8963_CONFIG_PATH, O_WRONLY | O_TRUNC | O_CREAT, 0664);
 	if (config_fd < 0) {
-		ALOGE("%s: Unable to open akm8963 config", __func__);
+		ALOGD("%s: Unable to open akm8963 config", __func__);
 		goto error;
 	}
 
@@ -161,7 +161,7 @@ int akm8963_config_write(struct akm8963_data *data)
 
 	rc = write(config_fd, buffer, length);
 	if (rc < length) {
-		ALOGE("%s: Unable to write akm8963 config", __func__);
+		ALOGD("%s: Unable to write akm8963 config", __func__);
 		goto error;
 	}
 
@@ -170,7 +170,7 @@ int akm8963_config_write(struct akm8963_data *data)
 
 	rc = write(config_fd, buffer, length);
 	if (rc < length) {
-		ALOGE("%s: Unable to write akm8963 config", __func__);
+		ALOGD("%s: Unable to write akm8963 config", __func__);
 		goto error;
 	}
 
@@ -179,7 +179,7 @@ int akm8963_config_write(struct akm8963_data *data)
 
 	rc = write(config_fd, buffer, length);
 	if (rc < length) {
-		ALOGE("%s: Unable to write akm8963 config", __func__);
+		ALOGD("%s: Unable to write akm8963 config", __func__);
 		goto error;
 	}
 
@@ -314,12 +314,12 @@ void *akm8963_thread(void *thread_data)
 			memset(&i2c_data, 0, sizeof(i2c_data));
 			rc = ioctl(device_fd, ECS_IOCTL_GET_MAGDATA, &i2c_data);
 			if (rc < 0) {
-				ALOGE("%s: Unable to get akm8963 data", __func__);
+				ALOGD("%s: Unable to get akm8963 data", __func__);
 				goto next;
 			}
 
 			if (!(i2c_data[0] & 0x01)) {
-				ALOGE("%s: akm8963 data is not ready", __func__);
+				ALOGD("%s: akm8963 data is not ready", __func__);
 				goto next;
 			}
 
@@ -338,13 +338,13 @@ void *akm8963_thread(void *thread_data)
 
 			rc = akm8963_ho_calibration(data, (short *) &magnetic_data, sizeof(magnetic_data));
 			if (rc < 0) {
-				ALOGE("%s: Unable to calibrate akm8963 HO", __func__);
+				ALOGD("%s: Unable to calibrate akm8963 HO", __func__);
 				goto next;
 			}
 
 			rc = akm8963_magnetic(data);
 			if (rc < 0) {
-				ALOGE("%s: Unable to get akm8963 magnetic", __func__);
+				ALOGD("%s: Unable to get akm8963 magnetic", __func__);
 				goto next;
 			}
 
@@ -393,13 +393,13 @@ int akm8963_init(struct noteII_sensors_handlers *handlers,
 
 	device_fd = open("/dev/akm8963", O_RDONLY);
 	if (device_fd < 0) {
-		ALOGE("%s: Unable to open device", __func__);
+		ALOGD("%s: Unable to open device", __func__);
 		goto error;
 	}
 
 	rc = ioctl(device_fd, ECS_IOCTL_GET_FUSEROMDATA, &data->asa);
 	if (rc < 0) {
-		ALOGE("%s: Unable to get akm8963 FUSE ROM data", __func__);
+		ALOGD("%s: Unable to get akm8963 FUSE ROM data", __func__);
 		goto error;
 	}
 
@@ -414,7 +414,7 @@ int akm8963_init(struct noteII_sensors_handlers *handlers,
 
 	input_fd = input_open("magnetic_sensor");
 	if (input_fd < 0) {
-		ALOGE("%s: Unable to open magnetic input", __func__);
+		ALOGD("%s: Unable to open magnetic input", __func__);
 		goto error;
 	}
 
@@ -428,7 +428,7 @@ int akm8963_init(struct noteII_sensors_handlers *handlers,
 
 	rc = pthread_create(&data->thread, &thread_attr, akm8963_thread, (void *) handlers);
 	if (rc < 0) {
-		ALOGE("%s: Unable to create akm8963 thread", __func__);
+		ALOGD("%s: Unable to create akm8963 thread", __func__);
 		pthread_mutex_destroy(&data->mutex);
 		goto error;
 	}
@@ -511,12 +511,12 @@ int akm8963_activate(struct noteII_sensors_handlers *handlers)
 
 	rc = akm8963_config_read(data);
 	if (rc < 0) {
-		ALOGE("%s: Unable to read akm8963 config", __func__);
+		ALOGD("%s: Unable to read akm8963 config", __func__);
 	}
 
 	rc = ssp_sensor_enable(GEOMAGNETIC_SENSOR);
 	if (rc < 0) {
-		ALOGE("%s: Unable to enable ssp sensor", __func__);
+		ALOGD("%s: Unable to enable ssp sensor", __func__);
 		return -1;
 	}
 
@@ -552,12 +552,12 @@ int akm8963_deactivate(struct noteII_sensors_handlers *handlers)
 	if (!empty) {
 		rc = akm8963_config_write(data);
 		if (rc < 0)
-			ALOGE("%s: Unable to write akm8963 config", __func__);
+			ALOGD("%s: Unable to write akm8963 config", __func__);
 	}
 
 	rc = ssp_sensor_disable(GEOMAGNETIC_SENSOR);
 	if (rc < 0) {
-		ALOGE("%s: Unable to disable ssp sensor", __func__);
+		ALOGD("%s: Unable to disable ssp sensor", __func__);
 		return -1;
 	}
 
@@ -581,12 +581,12 @@ int akm8963_set_delay(struct noteII_sensors_handlers *handlers, int64_t delay)
 
 	rc = sysfs_value_write(path_delay, (int) delay);
 	if (rc < 0) {
-		ALOGE("%s: Unable to write sysfs value", __func__);
+		ALOGD("%s: Unable to write sysfs value", __func__);
 		char path_delay2[PATH_MAX] = "/sys/class/sensors/ssp_sensor/poll_delay";
 		rc = sysfs_value_write(path_delay, (int) delay);
 		if(rc < 0)
 		{
-			ALOGE("%s: Unable to write sysfs value", __func__);
+			ALOGD("%s: Unable to write sysfs value", __func__);
 			return -1;
 		}
 	}

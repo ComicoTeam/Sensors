@@ -142,24 +142,24 @@ int smdk4x12_sensors_set_delay(struct sensors_poll_device_t *dev, int handle,
 
 static int smdk4x12_sensors_batch(struct sensors_poll_device_1 *dev, int handle, int flags, int64_t period_ns, int64_t timeout) 
 {
-	ALOGV("batch");
+	ALOGD("batch");
     int retval = -EINVAL;
     int local_handle = get_local_handle(handle);
     sensors_poll_device_1_t* v1 = this->get_v1_device_by_handle(handle);
     retval = v1->batch(v1, local_handle, flags, period_ns, timeout);
-    ALOGV("retval %d", retval);
+    ALOGD("retval %d", retval);
     return retval;
 }
 
 static int smdk4x12_sensors_flush(struct sensors_poll_device_1 *dev, int handle) 
 {
-    ALOGV("flush");
+    ALOGD("flush");
 	(void)dev;
     int retval = -EINVAL;
     int local_handle = get_local_handle(handle);
     sensors_poll_device_1_t* v1 = this->get_v1_device_by_handle(handle);
     retval = v1->flush(v1, local_handle);
-    ALOGV("retval %d", retval);
+    ALOGD("retval %d", retval);
     return retval;
 }
 

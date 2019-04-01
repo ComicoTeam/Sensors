@@ -72,7 +72,7 @@ int uinput_rel_create(const char *name)
 
 	uinput_fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
 	if (uinput_fd < 0) {
-		ALOGE("%s: Unable to open uinput device", __func__);
+		ALOGD("%s: Unable to open uinput device", __func__);
 		goto error;
 	}
 
@@ -93,19 +93,19 @@ int uinput_rel_create(const char *name)
 	rc |= ioctl(uinput_fd, UI_SET_EVBIT, EV_SYN);
 
 	if (rc < 0) {
-		ALOGE("%s: Unable to set uinput bits", __func__);
+		ALOGD("%s: Unable to set uinput bits", __func__);
 		goto error;
 	}
 
 	rc = write(uinput_fd, &uinput_dev, sizeof(uinput_dev));
 	if (rc < 0) {
-		ALOGE("%s: Unable to write uinput device", __func__);
+		ALOGD("%s: Unable to write uinput device", __func__);
 		goto error;
 	}
 
 	rc = ioctl(uinput_fd, UI_DEV_CREATE);
 	if (rc < 0) {
-		ALOGE("%s: Unable to create uinput device", __func__);
+		ALOGD("%s: Unable to create uinput device", __func__);
 		goto error;
 	}
 

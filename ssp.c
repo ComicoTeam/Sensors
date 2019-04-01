@@ -47,7 +47,7 @@ int ssp_sensor_enable(int sensor_type)
 	rc = sysfs_value_write(path_enable, value);
 	if (rc < 0)
 	{
-		ALOGV("Check path_enable! ERROR! SENSOR: ", sensor_type);
+		ALOGD("Check path_enable! ERROR! SENSOR: ", sensor_type);
 		return -1;
 	}
 
@@ -75,6 +75,6 @@ int ssp_sensor_disable(int sensor_type)
 	if (rc < 0)
 		return -1;
 
-	ALOGV("DISABLED: ", sensor_type);
+	ALOGD("DISABLED: ", sensor_type);
 	return 0;
 }

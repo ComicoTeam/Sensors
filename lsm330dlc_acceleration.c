@@ -57,24 +57,24 @@ int lsm330dlc_acceleration_init(struct noteII_sensors_handlers *handlers,
 
 	input_fd = input_open("accelerometer_sensor");
 	if (input_fd < 0) {
-		ALOGE("%s: Unable to open input", __func__);
+		ALOGD("%s: Unable to open input", __func__);
 		goto error;
 	}
 
 	rc = sysfs_path_prefix("accelerometer_sensor", (char *) &path);
 	if (rc < 0 || path[0] == '\0') {
-		ALOGE("%s: Unable to open sysfs", __func__);
+		ALOGD("%s: Unable to open sysfs", __func__);
 		goto error;
 	}
 
 	int sf = snprintf(data->path_delay, PATH_MAX, "%s/poll_delay", path);
 	if(sf <= 0)
 	{
-		ALOGV("Acc init with acc_poll_delay");
+		ALOGD("Acc init with acc_poll_delay");
 		sf = snprintf(data->path_delay, PATH_MAX, "%s/acc_poll_delay", path);
 		if(sf <= 0)
 		{
-			ALOGV("ACC HAS FAILED !POLL_DELAY!");
+			ALOGD("ACC HAS FAILED !POLL_DELAY!");
 			goto error;
 		}
 	}
@@ -129,7 +129,7 @@ int lsm330dlc_acceleration_activate(struct noteII_sensors_handlers *handlers)
 
 	rc = ssp_sensor_enable(ACCELEROMETER_SENSOR);
 	if (rc < 0) {
-		ALOGE("%s: Unable to enable ssp sensor", __func__);
+		ALOGD("%s: Unable to enable ssp sensor", __func__);
 		return -1;
 	}
 
@@ -152,7 +152,7 @@ int lsm330dlc_acceleration_deactivate(struct noteII_sensors_handlers *handlers)
 
 	rc = ssp_sensor_disable(ACCELEROMETER_SENSOR);
 	if (rc < 0) {
-		ALOGE("%s: Unable to disable ssp sensor", __func__);
+		ALOGD("%s: Unable to disable ssp sensor", __func__);
 		return -1;
 	}
 
@@ -175,7 +175,7 @@ int lsm330dlc_acceleration_set_delay(struct noteII_sensors_handlers *handlers, i
 
 	rc = sysfs_value_write(data->path_delay, (int) delay);
 	if (rc < 0) {
-		ALOGE("%s: Unable to write sysfs value", __func__);
+		ALOGD("%s: Unable to write sysfs value", __func__);
 		return -1;
 	}
 
