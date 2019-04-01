@@ -27,6 +27,10 @@
 #ifndef _NOTE_II_SENSORS_H
 #define _NOTE_II_SENSORS_H
 
+#define SMDK4x12_SENSORS_NEEDED_API		(1 << 0)
+
+struct smdk4x12_sensors_device;
+
 struct noteII_sensors_handlers {
 	char *name;
 	int handle;
