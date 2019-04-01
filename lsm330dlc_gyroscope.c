@@ -142,7 +142,7 @@ int lsm330dlc_gyroscope_activate(struct noteII_sensors_handlers *handlers)
 }
 
 int lsm330dlc_gyroscope_deactivate(struct noteII_sensors_handlers *handlers)
-{/*
+{
 	struct lsm330dlc_gyroscope_data *data;
 	int rc;
 
@@ -160,7 +160,6 @@ int lsm330dlc_gyroscope_deactivate(struct noteII_sensors_handlers *handlers)
 	}
 
 	handlers->activated = 1;
-*/
 	return 0;
 }
 
@@ -252,7 +251,7 @@ int lsm330dlc_gyroscope_get_data(struct noteII_sensors_handlers *handlers,
 			}
 		} else if (input_event.type == EV_SYN) {
 			if (input_event.code == SYN_REPORT)
-				event->timestamp = input_timestamp(&input_event);
+				event->timestamp = timevalToNano(event->time);
 		}
 	} while (input_event.type != EV_SYN);
 
