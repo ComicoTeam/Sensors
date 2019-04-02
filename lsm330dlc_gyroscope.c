@@ -251,7 +251,8 @@ int lsm330dlc_gyroscope_get_data(struct noteII_sensors_handlers *handlers,
 			}
 		} else if (input_event.type == EV_SYN) {
 			if (input_event.code == SYN_REPORT)
-				event->timestamp = timevalToNano(event->time);
+				int64_t time = getTimestamp();
+				event->timestamp = time
 		}
 	} while (input_event.type != EV_SYN);
 

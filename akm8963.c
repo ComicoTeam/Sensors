@@ -36,7 +36,6 @@
 extern int mFlushed;
 
 struct akm8963_data {
-
 	sensors_vec_t magnetic;
 	short magnetic_data[4][3];
 	int magnetic_data_count;
@@ -661,7 +660,8 @@ int akm8963_get_data(struct noteII_sensors_handlers *handlers,
 			}
 		} else if (input_event.type == EV_SYN) {
 			if (input_event.code == SYN_REPORT)
-				event->timestamp = input_timestamp(&input_event);
+				int64_t time = getTimestamp();
+				event->timestamp = time
 		}
 	} while (input_event.type != EV_SYN);
 

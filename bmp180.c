@@ -141,7 +141,7 @@ int bmp180_activate(struct noteII_sensors_handlers *handlers)
 
 int bmp180_deactivate(struct noteII_sensors_handlers *handlers)
 {
-/*	struct bmp180_data *data;
+	struct bmp180_data *data;
 	int rc;
 
 	ALOGD("%s(%p)", __func__, handlers);
@@ -158,8 +158,6 @@ int bmp180_deactivate(struct noteII_sensors_handlers *handlers)
 	}
 
 	handlers->activated = 1;
-
-	return 0;*/
 	return 0;
 }
 
@@ -236,7 +234,8 @@ int bmp180_get_data(struct noteII_sensors_handlers *handlers,
 			}
 		} else if (input_event.type == EV_SYN) {
 			if (input_event.code == SYN_REPORT && event->pressure != 0) {
-				event->timestamp = input_timestamp(&input_event);
+				int64_t time = getTimestamp();
+				event->timestamp = time
 				break;
 			} else {
 				return -1;
