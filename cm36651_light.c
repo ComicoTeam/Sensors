@@ -140,7 +140,7 @@ int cm36651_light_activate(struct noteII_sensors_handlers *handlers)
 }
 
 int cm36651_light_deactivate(struct noteII_sensors_handlers *handlers)
-{
+{/*
 	struct cm36651_light_data *data;
 	int rc;
 
@@ -159,7 +159,7 @@ int cm36651_light_deactivate(struct noteII_sensors_handlers *handlers)
 
 	handlers->activated = 1;
 
-	return 0;
+*/	return 0;
 }
 
 int cm36651_light_set_delay(struct noteII_sensors_handlers *handlers, int64_t delay)
@@ -230,8 +230,7 @@ int cm36651_light_get_data(struct noteII_sensors_handlers *handlers,
 				event->light = cm36651_light_convert(input_event.value);
 		} else if (input_event.type == EV_SYN) {
 			if (input_event.code == SYN_REPORT)
-				int64_t time = getTimestamp();
-				event->timestamp = time
+				event->timestamp = getTimestamp();
 		}
 	} while (input_event.type != EV_SYN);
 

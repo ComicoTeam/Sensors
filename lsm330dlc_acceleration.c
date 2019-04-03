@@ -249,8 +249,7 @@ int lsm330dlc_acceleration_get_data(struct noteII_sensors_handlers *handlers,
 			}
 		} else if (input_event.type == EV_SYN) {
 			if (input_event.code == SYN_REPORT)
-				int64_t time = getTimestamp();
-				event->timestamp = time
+				event->timestamp = getTimestamp();
 		}
 	} while (input_event.type != EV_SYN);
 

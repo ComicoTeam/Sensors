@@ -49,7 +49,7 @@ int64_t getTimestamp() {
     struct timespec t;
     t.tv_sec = t.tv_nsec = 0;
     clock_gettime(CLOCK_BOOTTIME, &t);
-    return int64_t(t.tv_sec)*1000000000LL + t.tv_nsec;
+    return (int64_t)(t.tv_sec)*1000000000LL + t.tv_nsec;
 }
 
 int64_t timestamp(struct timeval *time)

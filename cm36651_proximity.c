@@ -158,7 +158,7 @@ int cm36651_proximity_deactivate(struct noteII_sensors_handlers *handlers)
 
 	handlers->activated = 1;
 
-	return 0;*/
+*/
 	return 0;
 }
 
@@ -230,8 +230,7 @@ int cm36651_proximity_get_data(struct noteII_sensors_handlers *handlers,
 				event->distance = cm36651_proximity_convert(input_event.value);
 		} else if (input_event.type == EV_SYN) {
 			if (input_event.code == SYN_REPORT)
-				int64_t time = getTimestamp();
-				event->timestamp = time
+				event->timestamp = getTimestamp();
 		}
 	} while (input_event.type != EV_SYN);
 
