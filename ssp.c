@@ -33,7 +33,7 @@ int ssp_sensor_enable(int sensor_type)
 	int value;
 	int rc;
 
-	ALOGD("%s(%d)", __func__, sensor_type);
+	//ALOGD("%s(%d)", __func__, sensor_type);
 
 	if (sensor_type < 0 || sensor_type >= SENSOR_FACTORY_MAX)
 		return -EINVAL;
@@ -47,7 +47,7 @@ int ssp_sensor_enable(int sensor_type)
 	rc = sysfs_value_write(path_enable, value);
 	if (rc < 0)
 	{
-		ALOGD("Check path_enable! ERROR! SENSOR: ", sensor_type);
+		//ALOGD("Check path_enable! ERROR! SENSOR: ", sensor_type);
 		return -1;
 	}
 
@@ -60,7 +60,7 @@ int ssp_sensor_disable(int sensor_type)
 	int value;
 	int rc;
 
-	ALOGD("%s(%d)", __func__, sensor_type);
+	//ALOGD("%s(%d)", __func__, sensor_type);
 
 	if (sensor_type < 0 || sensor_type >= SENSOR_FACTORY_MAX)
 		return -EINVAL;
@@ -75,6 +75,6 @@ int ssp_sensor_disable(int sensor_type)
 	if (rc < 0)
 		return -1;
 
-	ALOGD("DISABLED: ", sensor_type);
+	//ALOGD("DISABLED: ", sensor_type);
 	return 0;
 }

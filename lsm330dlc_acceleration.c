@@ -48,7 +48,7 @@ int lsm330dlc_acceleration_init(struct noteII_sensors_handlers *handlers,
 	int rc;
 	int i;
 
-	ALOGD("%s(%p, %p)", __func__, handlers, device);
+	//ALOGD("%s(%p, %p)", __func__, handlers, device);
 
 	if (handlers == NULL)
 		return -EINVAL;
@@ -57,24 +57,24 @@ int lsm330dlc_acceleration_init(struct noteII_sensors_handlers *handlers,
 
 	input_fd = input_open("accelerometer_sensor");
 	if (input_fd < 0) {
-		ALOGD("%s: Unable to open input", __func__);
+		//ALOGD("%s: Unable to open input", __func__);
 		goto error;
 	}
 
 	rc = sysfs_path_prefix("accelerometer_sensor", (char *) &path);
 	if (rc < 0 || path[0] == '\0') {
-		ALOGD("%s: Unable to open sysfs", __func__);
+		//ALOGD("%s: Unable to open sysfs", __func__);
 		goto error;
 	}
 
 	int sf = snprintf(data->path_delay, PATH_MAX, "%s/poll_delay", path);
 	if(sf <= 0)
 	{
-		ALOGD("Acc init with acc_poll_delay");
+		//ALOGD("Acc init with acc_poll_delay");
 		sf = snprintf(data->path_delay, PATH_MAX, "%s/acc_poll_delay", path);
 		if(sf <= 0)
 		{
-			ALOGD("ACC HAS FAILED !POLL_DELAY!");
+			//ALOGD("ACC HAS FAILED !POLL_DELAY!");
 			goto error;
 		}
 	}
@@ -99,7 +99,7 @@ error:
 
 int lsm330dlc_acceleration_deinit(struct noteII_sensors_handlers *handlers)
 {
-	ALOGD("%s(%p)", __func__, handlers);
+	//ALOGD("%s(%p)", __func__, handlers);
 
 	if (handlers == NULL)
 		return -EINVAL;
@@ -120,7 +120,7 @@ int lsm330dlc_acceleration_activate(struct noteII_sensors_handlers *handlers)
 	struct lsm330dlc_acceleration_data *data;
 	int rc;
 
-	ALOGD("%s(%p)", __func__, handlers);
+	//ALOGD("%s(%p)", __func__, handlers);
 
 	if (handlers == NULL || handlers->data == NULL)
 		return -EINVAL;
@@ -129,7 +129,7 @@ int lsm330dlc_acceleration_activate(struct noteII_sensors_handlers *handlers)
 
 	rc = ssp_sensor_enable(ACCELEROMETER_SENSOR);
 	if (rc < 0) {
-		ALOGD("%s: Unable to enable ssp sensor", __func__);
+		//ALOGD("%s: Unable to enable ssp sensor", __func__);
 		return -1;
 	}
 
@@ -143,7 +143,7 @@ int lsm330dlc_acceleration_deactivate(struct noteII_sensors_handlers *handlers)
 	struct lsm330dlc_acceleration_data *data;
 	int rc;
 
-	ALOGD("%s(%p)", __func__, handlers);
+	//ALOGD("%s(%p)", __func__, handlers);
 
 	if (handlers == NULL || handlers->data == NULL)
 		return -EINVAL;
@@ -152,7 +152,7 @@ int lsm330dlc_acceleration_deactivate(struct noteII_sensors_handlers *handlers)
 
 	rc = ssp_sensor_disable(ACCELEROMETER_SENSOR);
 	if (rc < 0) {
-		ALOGD("%s: Unable to disable ssp sensor", __func__);
+		//ALOGD("%s: Unable to disable ssp sensor", __func__);
 		return -1;
 	}
 
@@ -166,7 +166,7 @@ int lsm330dlc_acceleration_set_delay(struct noteII_sensors_handlers *handlers, i
 	struct lsm330dlc_acceleration_data *data;
 	int rc;
 
-	ALOGD("%s(%p, %" PRId64 ")", __func__, handlers, delay);
+	//ALOGD("%s(%p, %" PRId64 ")", __func__, handlers, delay);
 
 	if (handlers == NULL || handlers->data == NULL)
 		return -EINVAL;
@@ -175,7 +175,7 @@ int lsm330dlc_acceleration_set_delay(struct noteII_sensors_handlers *handlers, i
 
 	rc = sysfs_value_write(data->path_delay, (int) delay);
 	if (rc < 0) {
-		ALOGD("%s: Unable to write sysfs value", __func__);
+		//ALOGD("%s: Unable to write sysfs value", __func__);
 		return -1;
 	}
 
@@ -208,7 +208,7 @@ int lsm330dlc_acceleration_get_data(struct noteII_sensors_handlers *handlers,
 		sensor_event.meta_data.what = 0;
 		*event++ = sensor_event;
 		mFlushed &= ~(0x01 << sensorId);
-		ALOGD("AkmSensor: %s Flushed sensorId: %d", __func__, sensorId);
+		//ALOGD("AkmSensor: %s Flushed sensorId: %d", __func__, sensorId);
 	}
 
 	data = (struct lsm330dlc_acceleration_data *) handlers->data;

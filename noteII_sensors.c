@@ -38,20 +38,20 @@ int mFlushed;
 
 struct sensor_t smdk4x12_sensors[] = {
 	{ "LSM330DLC 3-Axis Accelerometer", "STMicroelectronics", 1, SENSOR_TYPE_ACCELEROMETER,
-		SENSOR_TYPE_ACCELEROMETER, 2 * GRAVITY_EARTH, 0.0096f, 0.25f, 10000, 0, 0, SENSOR_STRING_TYPE_ACCELEROMETER, 0, 0,
+		SENSOR_TYPE_ACCELEROMETER, 2 * GRAVITY_EARTH, 0.0096f, 0.23f, 20000, 0, 0, SENSOR_STRING_TYPE_ACCELEROMETER, 0, 0,
 		SENSOR_FLAG_ON_CHANGE_MODE, {}, },
 	{ "AKM8963 Magnetic Sensor", "Asahi Kasei", 1, SENSOR_TYPE_MAGNETIC_FIELD,
-		SENSOR_TYPE_MAGNETIC_FIELD, 2000.0f, 0.06f, 6.0f, 10000, 0, 0, SENSOR_STRING_TYPE_MAGNETIC_FIELD, 0, 0,
+		SENSOR_TYPE_MAGNETIC_FIELD, 2000.0f, 1.0f/16.0f, 6.8f, 16667, 0, 0, SENSOR_STRING_TYPE_MAGNETIC_FIELD, 0, 0,
 		SENSOR_FLAG_ON_CHANGE_MODE, {}, },
 	{ "CM36651 Light Sensor", "Capella", 1, SENSOR_TYPE_LIGHT,
-		SENSOR_TYPE_LIGHT, 3000.0f, 1.0f, 0.2f, 0, 0, 0, SENSOR_STRING_TYPE_LIGHT, 0, 0,
+		SENSOR_TYPE_LIGHT, 10240.0f, 1.0f, 0.75f, 0, 0, 0, SENSOR_STRING_TYPE_LIGHT, 0, 0,
 		SENSOR_FLAG_ON_CHANGE_MODE, {}, },
 	{ "CM36651 Proximity Sensor", "Capella", 1, SENSOR_TYPE_PROXIMITY,
-		SENSOR_TYPE_PROXIMITY, 8.0f, 8.0f, 1.3f, 0, 0, 0, SENSOR_STRING_TYPE_PROXIMITY, 0, 0,
+		SENSOR_TYPE_PROXIMITY, 5.0f, 5.0f, 0.75f, 0, 0, 0, SENSOR_STRING_TYPE_PROXIMITY, 0, 0,
 		SENSOR_FLAG_WAKE_UP | SENSOR_FLAG_ON_CHANGE_MODE, {}, },
 	{ "LSM330DLC Gyroscope Sensor", "STMicroelectronics", 1, SENSOR_TYPE_GYROSCOPE,
-		SENSOR_TYPE_GYROSCOPE, 500.0f * (3.1415926535f / 180.0f), (70.0f / 4000.0f) * (3.1415926535f / 180.0f), 6.1f, 5000, 0, 0, SENSOR_STRING_TYPE_GYROSCOPE, 0, 0,
-		SENSOR_FLAG_ON_CHANGE_MODE, {}, },
+		SENSOR_TYPE_GYROSCOPE, (2000.0f*(float)M_PI/180.0f), ((70.0f / 4000.0f) * ((float)M_PI / 180.0f)), 6.1f, 1190, 0, 0, SENSOR_STRING_TYPE_GYROSCOPE, 0, 0,
+		SENSOR_FLAG_CONTINUOUS_MODE, {}, },
 	{ "BMP180 Pressure Sensor", "Bosch", 1, SENSOR_TYPE_PRESSURE,
 		SENSOR_TYPE_PRESSURE, 1000.0f, 1.0f, 1.0f, 66700, 0, 0, SENSOR_STRING_TYPE_PRESSURE, 0, 20000,
 		SENSOR_FLAG_CONTINUOUS_MODE, {}, },
@@ -79,7 +79,7 @@ int smdk4x12_sensors_activate(struct sensors_poll_device_t *dev, int handle,
 	struct smdk4x12_sensors_device *device;
 	int i;
 
-	ALOGD("%s(%p, %d, %d)", __func__, dev, handle, enabled);
+	//ALOGD("%s(%p, %d, %d)", __func__, dev, handle, enabled);
 
 	if (dev == NULL)
 		return -EINVAL;
@@ -119,7 +119,7 @@ int smdk4x12_sensors_set_delay(struct sensors_poll_device_t *dev, int handle,
 	struct smdk4x12_sensors_device *device;
 	int i;
 
-	ALOGD("%s(%p, %d, %" PRId64 ")", __func__, dev, handle, ns);
+	//ALOGD("%s(%p, %d, %" PRId64 ")", __func__, dev, handle, ns);
 
 	if (dev == NULL)
 		return -EINVAL;
@@ -142,7 +142,7 @@ int smdk4x12_sensors_set_delay(struct sensors_poll_device_t *dev, int handle,
 
 static int smdk4x12_sensors_batch(struct sensors_poll_device_1 *dev, int handle, int flags, int64_t period_ns, int64_t timeout) 
 {
-	ALOGD("batch");
+	//ALOGD("batch");
 	(void)flags;
 	(void)timeout;
 	smdk4x12_sensors_set_delay((struct sensors_poll_device_t *)dev, handle, period_ns);
@@ -151,10 +151,10 @@ static int smdk4x12_sensors_batch(struct sensors_poll_device_1 *dev, int handle,
 
 static int smdk4x12_sensors_flush(struct sensors_poll_device_1 *dev, int handle) 
 {
-    ALOGD("flush");
+    //ALOGD("flush");
 	(void)dev;
 	mFlushed |= (1 << handle);
-	ALOGD("%s: handle: %d", __func__, handle);
+	//ALOGD("%s: handle: %d", __func__, handle);
 	return 0;
 }
 
@@ -215,7 +215,7 @@ int smdk4x12_sensors_close(hw_device_t *device)
 	struct smdk4x12_sensors_device *smdk4x12_sensors_device;
 	int i;
 
-	ALOGD("%s(%p)", __func__, device);
+	//ALOGD("%s(%p)", __func__, device);
 
 	if (device == NULL)
 		return -EINVAL;
@@ -243,7 +243,7 @@ int smdk4x12_sensors_open(const struct hw_module_t* module, const char *id,
 	struct smdk4x12_sensors_device *smdk4x12_sensors_device;
 	int p, i;
 
-	ALOGD("%s(%p, %s, %p)", __func__, module, id, device);
+	//ALOGD("%s(%p, %s, %p)", __func__, module, id, device);
 
 	if (module == NULL || device == NULL)
 		return -EINVAL;
@@ -287,7 +287,7 @@ int smdk4x12_sensors_open(const struct hw_module_t* module, const char *id,
 int smdk4x12_sensors_get_sensors_list(struct sensors_module_t* module,
 	const struct sensor_t **sensors_p)
 {
-	ALOGD("%s(%p, %p)", __func__, module, sensors_p);
+	//ALOGD("%s(%p, %p)", __func__, module, sensors_p);
 
 	if (sensors_p == NULL)
 		return -EINVAL;
